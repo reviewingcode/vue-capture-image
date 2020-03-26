@@ -1,7 +1,7 @@
 {
   "name": "vue-capture-image",
   "version": "0.0.0",
-  "description": "Test app to capture image with mobile front camera.",
+  "description": "Test app to capture image with mobile camera.",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

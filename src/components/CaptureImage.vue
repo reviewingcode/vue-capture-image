@@ -22,7 +22,7 @@
       ref="input"
       type="file"
       accept="image/*"
-      capture="user"
+      capture="environment"
       @input="setImage"
     >
   </div>
