@@ -1,6 +1,6 @@
 {
   "name": "vue-capture-image",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Test app to capture image with mobile camera.",
   "private": true,
   "scripts": {
