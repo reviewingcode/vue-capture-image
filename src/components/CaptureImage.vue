@@ -4,7 +4,7 @@
     <button
       v-if="!imageURL"
       class="button"
-      @click="$refs['input'].click()"
+      @click="proxyClick"
     >
       Take Picture
     </button>
@@ -23,7 +23,7 @@
       type="file"
       accept="image/*"
       capture="environment"
-      @input="setImage"
+      @input="showPreview"
     >
   </div>
 </template>
@@ -39,10 +39,12 @@ export default {
   },
 
   methods: {
-    setImage(e) {
+    proxyClick() {
+      this.$refs.input.click();
+    },
+    showPreview(e) {
       if (!e.target.files[0]) return;
 
-      // eslint-disable-next-line prefer-destructuring
       this.imageURL = URL.createObjectURL(e.target.files[0]);
     },
   },
