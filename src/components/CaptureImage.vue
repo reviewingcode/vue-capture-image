@@ -4,16 +4,27 @@
     <button
       class="button"
       @click="proxyClick"
+      :disabled="isUploading"
     >
       Take Picture
     </button>
 
-    <!-- preview -->
-    <img
-      v-if="imageURL"
-      class="image"
-      :src="imageURL"
+    <!-- upload state -->
+    <div
+      v-if="isUploading"
+      class="upload-state"
     >
+      {{ uploadState }}
+    </div>
+
+    <!-- preview -->
+    <div>
+      <img
+        v-if="imageURL"
+        class="image"
+        :src="imageURL"
+      >
+    </div>
 
     <!-- file input -->
     <input
@@ -37,6 +48,10 @@ export default {
       imageURL: null,
       // url to POST image to
       endpointURL: 'https://happydelivery.io/webapi/V1/rcvpht.php',
+      // upload in progress
+      isUploading: false,
+      // upload state
+      uploadState: '',
     };
   },
 
@@ -63,6 +78,9 @@ export default {
 
       // show some useful info, start uploading
       console.log(`Uploading image as base64 encoded string to ${this.endpointURL}`);
+      // set upload state
+      this.uploadState = 'Uploading...';
+      this.isUploading = true;
 
       // POST formData
       return fetch(this.endpointURL, {
@@ -70,6 +88,12 @@ export default {
         mode: 'cors',
         body: formData,
       });
+    },
+    hideUploadState(duration) {
+      // wait duration seconds and clear upload state
+      setTimeout(() => {
+        this.isUploading = false;
+      }, duration * 1000);
     },
     showPreviewAndPostToEndpoint(e) {
       // get image file
@@ -94,12 +118,18 @@ export default {
         // post base64 encoded string to endpoint
         .then(this.postToEndpoint)
         // show some useful info, success
-        .then(() => {
+        .then((res) => {
           console.log('Upload successful!');
+          this.uploadState = `Status: ${res.status}`;
+          // wait duration seconds and clear upload state
+          this.hideUploadState(5);
         })
         // show some useful info, if any error
         .catch((err) => {
           console.error('Error: ', err);
+          this.uploadState = `Error: ${err.message}`;
+          // wait duration seconds and clear upload state
+          this.hideUploadState(5);
         });
     },
   },
@@ -121,10 +151,21 @@ export default {
   cursor: pointer;
 }
 
+.button:disabled {
+  background-color: lightslategrey;
+  color: #333333;
+  cursor: default;
+}
+
+.upload-state {
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: salmon;
+}
+
 .image {
-  min-width: 50vw;
-  max-width: 100vw;
-  min-height: 50vh;
-  max-height: 100vh;
+  max-width: 50vw;
+  max-height: 50vh;
 }
 </style>
