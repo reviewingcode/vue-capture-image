@@ -33,7 +33,7 @@
       type="file"
       accept="image/*"
       capture="environment"
-      @input="showPreviewAndPostToEndpoint"
+      @change="showPreviewAndPostToEndpoint"
     >
   </div>
 </template>
