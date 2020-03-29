@@ -6,7 +6,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "firebase:hosting": "firebase deploy --only hosting",
+    "deploy": "yarn build && yarn firebase:hosting"
   },
   "dependencies": {
     "core-js": "^3.6.4",
