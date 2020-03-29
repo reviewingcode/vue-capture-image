@@ -36,7 +36,7 @@ export default {
       // temporary image blob for preview
       imageURL: null,
       // url to POST image to
-      endpointURL: 'https://happydelivery.io',
+      endpointURL: 'https://happydelivery.io/webapi/V1/rcvpht.php',
     };
   },
 
