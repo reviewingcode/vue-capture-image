@@ -1,5 +1,15 @@
 <template>
   <div>
+    <!-- warnings -->
+    <div
+      v-if="featureSupportWarn"
+      class="warnings"
+    >
+      <strong>NOTE: </strong>
+      This browser does not support HTML attribute capture!
+      Please switch to a modern browser for auto camera selection.
+    </div>
+
     <!-- button -->
     <button
       class="button"
@@ -52,6 +62,8 @@ export default {
       isUploading: false,
       // upload state
       uploadState: '',
+      // feature support warning
+      featureSupportWarn: false,
     };
   },
 
@@ -133,10 +145,28 @@ export default {
         });
     },
   },
+
+  mounted() {
+    // check if browser supports attribute "capture"
+    const nosupport = this.$refs.input.attributes.capture === undefined;
+
+    if (nosupport) {
+      console.warn('This browser does not support HTML attribute capture! Please switch to a modern browser for auto camera selection.');
+      this.featureSupportWarn = true;
+    }
+  },
 };
 </script>
 
 <style scoped>
+.warnings {
+  padding: 10px 0;
+  color: orange;
+  background-color: #ffffff;
+  font-size: 14px;
+  font-style: italic;
+}
+
 .button {
   width: 200px;
   margin-top: 30px;
