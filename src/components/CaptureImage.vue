@@ -11,7 +11,7 @@
 
     <!-- upload state -->
     <div
-      v-if="isUploading"
+      v-if="uploadState !== ''"
       class="upload-state"
     >
       {{ uploadState }}
@@ -51,7 +51,7 @@ export default {
       // upload in progress
       isUploading: false,
       // upload state
-      uploadState: '',
+      uploadState: 'Click above button to start!',
     };
   },
 
@@ -72,9 +72,15 @@ export default {
       });
     },
     postToEndpoint(base64EncodedString) {
+      // set upload state
+      this.uploadState = 'Constructing payload!';
+
       // create payload
       const formData = new FormData();
       formData.append('image', base64EncodedString);
+
+      // set upload state
+      this.uploadState = 'Ready to upload!';
 
       // show some useful info, start uploading
       console.log(`Uploading image as base64 encoded string to ${this.endpointURL}`);
@@ -93,25 +99,40 @@ export default {
       // wait duration seconds and clear upload state
       setTimeout(() => {
         this.isUploading = false;
+        this.uploadState = '';
       }, duration * 1000);
     },
     showPreviewAndPostToEndpoint(e) {
+      // set upload state
+      this.uploadState = 'Selecting Image!';
+
       // get image file
       const [file] = e.target.files;
 
       // show some useful info, if no image
       if (!file) {
         console.error('You did not select any image!');
+        // set upload state
+        this.uploadState = 'You did not select any image!';
         return;
       }
+
+      // set upload state
+      this.uploadState = 'Image selected!';
 
       // release memory occupied by previous image file, if any
       if (this.imageURL) {
         URL.revokeObjectURL(this.imageURL);
+
+        // set upload state
+        this.uploadState = 'Memory released!';
       }
 
       // preview image
       this.imageURL = URL.createObjectURL(file);
+
+      // set upload state
+      this.uploadState = 'Converting image to base 64 string!';
 
       // convert image to base64 string
       this.getBase64(file)
